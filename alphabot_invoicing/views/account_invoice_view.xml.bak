@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		
+		<record id="account_view_move_form_alphabot" model="ir.ui.view">
+			<field name="name">account.move.alphabot</field>
+			<field name="model">account.move</field>
+			<field name="inherit_id" ref="account.view_move_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='currency_id']" position="after">
+					<field name="alphabot_fiscal_data" invisible="1"/>
+					<field name="alphabot_estado" readonly="1"
+						   string="Info imp. fiscal"
+						   attrs="{'invisible': [('alphabot_estado', '=', False)]}"						   
+						   />					
+					<field name="alphabot_cliente_name"
+						   attrs="{
+						   'readonly': [('|'),('alphabot_fiscal_data', '=', False),('invoice_payment_state', '=', 'paid')],
+						   }"/>
+					<field name="alphabot_cliente_ruc"
+						   attrs="{
+						   'readonly': [('|'),('alphabot_fiscal_data', '=', False),('invoice_payment_state', '=', 'paid')],
+						   }"/>
+					<field name="alphabot_devol_fact"
+						   attrs="{
+						   'invisible': [('type', 'not in', ('out_refund', 'in_refund'))],
+						   'readonly': [('|'),('alphabot_fiscal_data', '=', False),('invoice_payment_state', '=', 'paid')],
+						   }"/>
+				</xpath>
+			</field>
+		</record>
+		
+		<record id="view_invoice_tree_alpha" model="ir.ui.view">
+			 <field name="name">account.invoice.tree.alpha</field>
+			 <field name="model">account.move</field>
+			 <field name="inherit_id" ref="account.view_invoice_tree"/>
+			 <field name="arch" type="xml">		 
+				 <xpath expr="//field[@name='name']" position="after">
+					<field name="alphabot_estado" string="Info imp. fiscal"/>		
+				</xpath>			
+			 </field>		 
+		</record>
+		
+
+	</data>
+</odoo>
